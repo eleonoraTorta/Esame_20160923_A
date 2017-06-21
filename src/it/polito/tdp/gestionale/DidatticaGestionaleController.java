@@ -1,8 +1,10 @@
 package it.polito.tdp.gestionale;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.gestionale.model.Corso;
 import it.polito.tdp.gestionale.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,13 +30,23 @@ public class DidatticaGestionaleController {
 	@FXML
 	void doCorsiFrequentati(ActionEvent event) {
 		txtResult.clear();
-		txtResult.setText("premuto Corsi Frequentati");
+		model.generaGrafo();
+		List <Integer> statistica = model.getStatCorsi();
+		for( Integer i =0 ; i< statistica.size(); i++){
+			txtResult.appendText( "Numero di studenti che hanno frequentato " +  i + " corsi: " + statistica.get(i) + "\n");
+		}
+	
 	}
 	
 	@FXML
 	void doVisualizzaCorsi(ActionEvent event) {
 		txtResult.clear();
-		txtResult.setText("premuto Visualizza Corsi");
+		model.generaGrafo();
+		List <Corso> best = model.findMinimalSet();
+		txtResult.appendText("Corsi in cui e` necessario fare un intervento per raggiungere tutti gli studenti che frequentano almeno un corso:\n");
+		for( Corso c : best){
+			txtResult.appendText(c.getCodins() + " " + c.getNome() + "\n");
+		}
 	}
 
 	@FXML
